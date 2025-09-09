@@ -17,13 +17,20 @@
     "dotenv-cli": "^10.0.0",
     "dotenv-flow": "^4.1.0",
     "nodemon": "^3.1.10",
+    "prisma": "^6.15.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@prisma/client": "^6.15.0",
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.5"
   }
 }
