@@ -5,3 +5,4 @@ node_modules
 .env.qa
 
 /src/generated/prisma
+".env*" 
