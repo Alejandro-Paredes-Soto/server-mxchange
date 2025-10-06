@@ -9,9 +9,32 @@ datasource db {
 }
 
 model users {
-  idUser    Int       @id @default(autoincrement())
-  name      String    @db.VarChar(100)
-  email     String    @unique(map: "email_UNIQUE") @db.VarChar(100)
-  password  String    @db.VarChar(255)
-  createdAt DateTime? @default(now()) @db.DateTime(0)
+  idUser         Int              @id @default(autoincrement())
+  name           String           @db.VarChar(100)
+  email          String           @unique(map: "email_UNIQUE") @db.VarChar(100)
+  password       String           @db.VarChar(255)
+  createdAt      DateTime?        @default(now()) @db.DateTime(0)
+  changepassword changepassword[]
+  resetpassword  resetpassword[]
+}
+
+model changepassword {
+  idChangePassword Int       @id @default(autoincrement())
+  userId           Int
+  createAt         DateTime? @default(now()) @db.DateTime(0)
+  users            users     @relation(fields: [userId], references: [idUser], onDelete: NoAction, onUpdate: NoAction, map: "fk_userId_changepassword")
+
+  @@index([userId], map: "fk_userId_changepassword_idx")
+}
+
+model resetpassword {
+  idResetPassword Int       @id @default(autoincrement())
+  idUser          Int?
+  refreshToken    String?   @db.VarChar(255)
+  expiryToken     String?   @db.VarChar(255)
+  createdAt       DateTime? @default(now()) @db.DateTime(0)
+  active          Int?      @default(1) @db.TinyInt
+  users           users?    @relation(fields: [idUser], references: [idUser], onDelete: NoAction, onUpdate: NoAction, map: "fk_idUser_resetpassword")
+
+  @@index([idUser], map: "fk_idUser_resetpassword_idx")
 }

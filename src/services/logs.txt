@@ -1,0 +1,18 @@
+[5/10/2025, 4:07:31 p.m.] Error: No se encontró la plantilla en: C:\Users\aleja\OneDrive\Escritorio\server-mxchange\src\views\linkResetPasswordHtml.ejs
+[5/10/2025, 4:23:42 p.m.] Bad Request (400)
+  The from object must be provided for every email send. It is an object that requires the email parameter, but may also contain a name parameter.  e.g. {"email" : "example@example.com"}  or {"email" : "example@example.com", "name" : "Example Recipient"}.
+    from.email
+    http://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/errors.html#message.from
+[5/10/2025, 4:24:48 p.m.] Bad Request (400)
+  The from object must be provided for every email send. It is an object that requires the email parameter, but may also contain a name parameter.  e.g. {"email" : "example@example.com"}  or {"email" : "example@example.com", "name" : "Example Recipient"}.
+    from.email
+    http://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/errors.html#message.from
+[5/10/2025, 4:25:20 p.m.] Bad Request (400)
+  The from object must be provided for every email send. It is an object that requires the email parameter, but may also contain a name parameter.  e.g. {"email" : "example@example.com"}  or {"email" : "example@example.com", "name" : "Example Recipient"}.
+    from.email
+    http://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/errors.html#message.from
+[5/10/2025, 4:34:47 p.m.] Error: No se encontró la plantilla en: C:\Users\aleja\OneDrive\Escritorio\server-mxchange\views\linkResetPasswordHtml.ejs C:\Users\aleja\OneDrive\Escritorio\server-mxchange\views\linkResetPasswordHtml.ejs
+[5/10/2025, 4:39:33 p.m.] Bad Request (400)
+  The from object must be provided for every email send. It is an object that requires the email parameter, but may also contain a name parameter.  e.g. {"email" : "example@example.com"}  or {"email" : "example@example.com", "name" : "Example Recipient"}.
+    from.email
+    http://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/errors.html#message.from

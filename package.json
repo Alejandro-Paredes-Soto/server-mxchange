@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "dev": "npx kill-port 8005 && dotenv -e .env.local nodemon src/server.ts"
+    "dev": "dotenv -e .env.local nodemon src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,24 +12,33 @@
   "devDependencies": {
     "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.19",
+    "@types/ejs": "^3.1.5",
+    "@types/luxon": "^3.7.1",
+    "@types/node": "^24.6.2",
     "cross-env": "^10.0.0",
     "dotenv-cli": "^10.0.0",
     "dotenv-flow": "^4.1.0",
     "nodemon": "^3.1.10",
     "prisma": "^6.15.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0",
+    "@sendgrid/mail": "^8.1.6",
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
+    "date-fns-tz": "^3.2.0",
+    "ejs": "^3.1.10",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.14.5"
+    "luxon": "^3.7.2",
+    "mysql2": "^3.14.5",
+    "nanoid": "^5.1.6",
+    "sendgrid": "^5.2.3"
   }
 }

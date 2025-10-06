@@ -1,10 +1,19 @@
 import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { SendEmailWelcomeUser } from "./../services/sendgrid.service";
+import {
+  hasPassword,
+  signPayload,
+  verifyPassword,
+  writeErrorLogs,
+} from "./../services/index.service";
 import { prisma } from "./../db/prismaClient";
-import dotenvFlow from "dotenv-flow";
+import dotenv from "dotenv";
+import { DateTime } from "luxon";
 
-dotenvFlow.config();
+
+dotenv.config();
 
 export const Login = async (req: Request, res: Response) => {
   try {
@@ -124,6 +133,158 @@ export const Register = async (req: Request, res: Response) => {
       ok: true,
       mesage: `Usuario ${name} registrado correctamente`,
     });
+  } catch (error: any) {
+    return res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+      error: error.message,
+    });
+  }
+};
+
+export const LoginGoogle = async (req: Request, res: Response) => {
+  try {
+    const { email, name } = req.body;
+
+    if (!email || !name) {
+      return res
+        .status(400)
+        .json({ ok: false, message: "Faltan campos en el body json" });
+    }
+
+    let slcUser = null;
+
+    slcUser = await prisma.users.findFirst({
+      where: {
+        email: email,
+      },
+      select: {
+        idUser: true,
+        email: true,
+        name: true,
+      },
+    });
+
+    if (!slcUser) {
+      
+      slcUser = await prisma.users.create({
+        data: {
+          email: email,
+          name: name,
+          password: "",
+         
+        },
+        select: {
+          idUser: true,
+          email: true,
+          name: true,
+       
+        },
+      });
+
+      try {
+        await SendEmailWelcomeUser(
+          `${name}`,
+          `${process.env.BASE_URL_APP}/principal`,
+          email
+        );
+      } catch (error: any) {
+        //Notificar cuando no se haya enviado el correo
+        //writeErrorLogs(error);
+      }
+    }
+
+    let sendToken = null;
+
+    //Generamos el token y dura 3 dias
+    sendToken = signPayload(
+      {
+        email,
+        idUser: slcUser.idUser.toString(),
+      },
+      "3d"
+    );
+
+    return res
+      .status(200)
+
+      .json({
+        ok: true,
+        message: "Logueado!!",
+        data: {
+          token: sendToken,
+          email: slcUser.email,
+          name: slcUser.name,
+  
+          idUser: Number(slcUser.idUser.toString()),
+        },
+      });
+  } catch (error: any) {
+    return res.status(500).json({
+      ok: false,
+      error: error.message,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
+export const ChangePassword = async (req: Request, res: Response) => {
+  try {
+    const { currentPassword, newPassword, idUser } = req.body;
+
+    const findPassHas = await prisma.users.findFirst({
+      where: {
+        idUser: idUser,
+      },
+      select: {
+        password: true,
+      },
+    });
+
+    if (!findPassHas?.password) {
+      return res
+        .status(400)
+        .json({ ok: false, message: "Contrasena no encontrada" });
+    }
+
+    let verifyCurrentPass = await verifyPassword(
+      currentPassword,
+      findPassHas.password
+    );
+
+    if (!verifyCurrentPass) {
+      return res
+        .status(400)
+        .json({ ok: false, message: "La contraseña actual es incorrecta" });
+    }
+    const createdAt = DateTime.now()
+      .setZone("America/Mexico_City", { keepLocalTime: true })
+      .toJSDate();
+
+    let newPasswordInsert = await hasPassword(newPassword);
+
+    const insertNewPass = await prisma.users.update({
+      where: {
+        idUser: idUser,
+      },
+      data: {
+        password: newPasswordInsert,
+      },
+    });
+
+    if (insertNewPass) {
+      await prisma.changepassword.create({
+        data: {
+          userId: idUser,
+      
+        },
+      });
+
+      return res.status(200).json({
+        ok: true,
+        message: "Contraseña actualizada correctamente.",
+      });
+    }
   } catch (error: any) {
     return res.status(500).json({
       ok: false,
